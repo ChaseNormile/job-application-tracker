@@ -12,6 +12,45 @@ class ApplicationStatus(str, Enum):
     REJECTED = "rejected"
     WITHDRAWN = "withdrawn"
 
+class InterviewType(str, Enum):
+    SCREENING = "screening"
+    TECHNICAL = "technical"
+    BEHAVIORAL = "behavioral"
+    FINAL = "final"
+    ONSTITE = "onsite"
+    PHONE = "phone"
+    OTHER = "other"
+
+
+class InterviewBase(SQLModel):
+    application_id: int = Field(foreign_key="jobapplication.id")
+    interview_type: InterviewType
+    interview_date: date
+    interview_location: str | None = None
+    notes: str | None = None
+    completed: bool = Field(default=False)
+
+class Interview(InterviewBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class InterviewCreate(InterviewBase):
+    pass
+
+
+class InterviewRead(InterviewBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+class InterviewUpdate(SQLModel):
+    interview_type: InterviewType | None = None
+    interview_date: date | None = None
+    interview_location: str | None = None
+    notes: str | None = None
+    completed: bool | None = None
+
 
 class JobApplicationBase(SQLModel):
     company: str = Field(min_length=1, max_length=100, index=True)

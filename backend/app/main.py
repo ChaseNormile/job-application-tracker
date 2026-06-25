@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI
-from app.routers import applications
+from app.routers import applications, interviews
 from app.database import create_db_and_tables, get_session
 
 
@@ -19,6 +19,7 @@ app = FastAPI(
 
 
 app.include_router(applications.router)
+app.include_router(interviews.router)
 
 @app.get("/")
 def root() -> dict[str, str]:
