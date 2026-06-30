@@ -60,7 +60,9 @@ def read_interview(
     return interview
 
 
-@router.patch("/{interview_id}", response_model=InterviewRead
+@router.patch(
+    "/{interview_id}",
+    response_model=InterviewRead,
 )
 def update_interview(
     interview_id: int,
@@ -72,20 +74,31 @@ def update_interview(
         interview_id=interview_id,
         interview_data=interview_data,
     )
-    if not interview:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Interview not found")
+
+    if interview is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Interview not found",
+        )
+
     return interview
 
-@router.delete("/{interview_id}", status_code=status.HTTP_204_NO_CONTENT)
+
+@router.delete(
+    "/{interview_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 def delete_interview(
     interview_id: int,
     session: SessionDependency,
-):
+) -> None:
     success = interview_service.delete_interview(
         session=session,
         interview_id=interview_id,
     )
-    if not success:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Interview not found")
 
-        
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Interview not found",
+        )
