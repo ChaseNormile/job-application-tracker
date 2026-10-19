@@ -25,7 +25,12 @@ def get_interviews(
     offset: int = 0,
     limit: int = 20,
 ) -> list[Interview]:
-    statement = select(Interview).offset(offset).limit(limit).order_by(Interview.date)
+    statement = (
+    select(Interview)
+    .order_by(Interview.interview_date)
+    .offset(offset)
+    .limit(limit)
+)
     interviews = session.exec(statement).all()
     
     return interviews

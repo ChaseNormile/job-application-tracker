@@ -13,3 +13,12 @@ export interface Application {
   created_at: string;
   updated_at: string;
 }
+
+export interface ApplicationCreate {
+    company: string;
+    position: string;
+    location: string | null;
+    job_url: string | null;
+    status: | "saved" | "applied" | "interviewing" | "offer" | "rejected" | "withdrawn";
+    applied_date: string | null;
+}
